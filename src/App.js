@@ -37,12 +37,17 @@ const App = () => {
     };
     setTodos(todos.concat(todo));
     nextId.current += 1; // nextId 1씩 더하기
-  });
+  }, [todos]);
+
+  // 배열의 불변성을 지키면서 배열 원소를 제거해야 할 경우, 배열 내장 함수인 filter를 사용하면 간편함
+  const onRemove = useCallback(id => {
+    setTodos(todos.filter(todo=>todo.id !== id));
+  }, [todos]);
 
   return (
   <TodoTemplate>
     <TodoInsert onInsert={onInsert}/>
-    <TodoList todos={todos}/>
+    <TodoList todos={todos} onRemove={onRemove}/>
   </TodoTemplate>);
 };
 
