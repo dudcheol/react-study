@@ -5,7 +5,7 @@
     &:nth-child(even){ // & : 현재 블럭이 적용되는 셀렉터를 참조
         background: #f8f9fa;
     }
-    .checkBox {
+    .checkbox {
         cursor: pointer;
         flex: 1; // 차지할 수 있는 영역 모두 차지
         display: flex;
