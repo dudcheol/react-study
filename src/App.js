@@ -25,6 +25,8 @@ const App = () => {
 	// https://ko.reactjs.org/docs/hooks-reference.html#useref
 	const nextId = useRef(4);
 
+	// setTodos에 새로운 상태를 파라미터로 넣는 것이 아니라, '상태 업데이트를 어떻게 할지' 정의해 주는 업데이트 함수를 넣는다
+	// ex) setTodos(number+1) 대신, setTodos(number => number+1)
 	const onInsert = useCallback(
 		(text) => {
 			const todo = {
@@ -32,29 +34,29 @@ const App = () => {
 				text,
 				checked: false,
 			};
-			setTodos(todos.concat(todo));
+			setTodos(todos => todos.concat(todo));
 			nextId.current += 1; // nextId 1씩 더하기
 		},
-		[todos],
+		[],
 	);
 
 	// 배열의 불변성을 지키면서 배열 원소를 제거해야 할 경우, 배열 내장 함수인 filter를 사용하면 간편함
 	const onRemove = useCallback(
 		(id) => {
-			setTodos(todos.filter((todo) => todo.id !== id));
+			setTodos(todos => todos.filter((todo) => todo.id !== id));
 		},
-		[todos],
+		[],
 	);
 
 	const onToggle = useCallback(
 		(id) => {
-			setTodos(
+			setTodos(todos =>
 				todos.map((todo) =>
 					todo.id === id ? { ...todo, checked: !todo.checked } : todo,
 				),
 			);
 		},
-		[todos],
+		[],
 	);
 
 	return (
