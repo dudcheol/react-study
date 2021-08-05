@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import './App.css';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
@@ -23,9 +23,25 @@ const App = () => {
     },
   ]);
 
+  // 고윳값으로 사용될 id
+  // ref를 사용하여 변수 담기
+  // id값을 useState가 아닌 useRef를 사용하는 이유? id 값은 렌더링되는 정보가 아니기 때문. 이 값이 바뀐다고 해서 컴포넌트가 리렌더링 될 필요가 없다.
+  // https://ko.reactjs.org/docs/hooks-reference.html#useref
+  const nextId = useRef(4);
+
+  const onInsert = useCallback(text => {
+    const todo = {
+      id: nextId.current,
+      text,
+      checked: false,
+    };
+    setTodos(todos.concat(todo));
+    nextId.current += 1; // nextId 1씩 더하기
+  });
+
   return (
   <TodoTemplate>
-    <TodoInsert/>
+    <TodoInsert onInsert={onInsert}/>
     <TodoList todos={todos}/>
   </TodoTemplate>);
 };
