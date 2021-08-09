@@ -23,18 +23,21 @@ const NewsListBlock = styled.div`
 //     urlToImage: 'https://via.placeholder.com/160',
 // };
 
-const NewsList = () => {
+const NewsList = ({ category }) => {
     const [articles, setArticles] = useState(null);
     const [loading, setLoading] = useState(null);
 
     // useEffect를 사용하여 컴포넌트가 처음 렌더링되는 시점에 API를 요청해본다
+    // 만약, 클래스형 컴포넌트로 만들게 된다면 componentDidMount와 componentDidUpdate에서 요청을 시작하도록 설정했어야 함.
+    // 지금은 함수형 컴포넌트이므로 useEffect 한 번으로 컴포넌트가 맨 처음 렌더링될 때, 그리고 category 값이 바뀔 때 요청하도록 설정 가능함
     useEffect(() => {
         // async를 사용하는 함수 따로 선언
         const fetchData = async () => {
             setLoading(true);
             try {
+                const query = category === 'all' ? '' : `&category=${category}`;
                 const response = await axios.get(
-                    'https://newsapi.org/v2/top-headlines?country=kr&apiKey=db8c12a2fac84f129aabac184a20526d',
+                    `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=db8c12a2fac84f129aabac184a20526d`,
                 );
                 setArticles(response.data.articles);
             } catch (e) {
@@ -43,7 +46,7 @@ const NewsList = () => {
             setLoading(false);
         };
         fetchData();
-    }, []);
+    }, [category]);
 
     // 대기 중일 때
     if (loading) {
