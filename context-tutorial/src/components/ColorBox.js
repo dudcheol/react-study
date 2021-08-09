@@ -1,20 +1,29 @@
 import React from 'react';
-import ColorContext from '../contexts/color';
+import { ColorConsumer } from '../contexts/color';
 
 const ColorBox = () => {
     return (
         // Render Props(Function as a child) 패턴
-        <ColorContext.Consumer>
-            {value => (
-                <div
-                    style={{
-                        width: '64px',
-                        height: '64px',
-                        background: value.color
-                    }}
-                />
+        <ColorConsumer>
+            {({ state }) => ( // 객체 비구조화 할당 문법
+                <>
+                    <div
+                        style={{
+                            width: '64px',
+                            height: '64px',
+                            background: state.color
+                        }}
+                    />
+                    <div
+                        style={{
+                            width: '32px',
+                            height: '32px',
+                            background: state.subcolor
+                        }}
+                    />
+                </>
             )}
-        </ColorContext.Consumer>
+        </ColorConsumer>
     );
 };
 
